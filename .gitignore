@@ -1,0 +1,50 @@
+# 虚拟环境
+.venv/
+venv/
+env/
+
+# PyCharm / JetBrains
+.idea/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+*.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# PyInstaller / 打包过程产物
+build/
+dist/
+*.spec
+
+# 本地 / 编辑器杂项
+*.log
+*.tmp
+*.swp
+*~
+.DS_Store
+Thumbs.db
+
+# Qt / qmake 常见过程文件
+*.user
+*.pro.user
+*_qmlcache.qrc
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.dylib
+debug/
+release/
+Makefile*
+object_script.*
