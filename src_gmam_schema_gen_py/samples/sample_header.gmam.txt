@@ -1,0 +1,7 @@
+# GMAM Schema
+version=1
+kind=header
+name|type|offset|length|scale|rounding|overflow|overflowFill|align|padFill|missingFill|missingPolicy
+sync|Chars|0|2|0|Truncate|Error|9|ByType|\0|\0|TreatAsMissing
+cmd|Numeric|2|1|0|Truncate|FillChar|9|ByType|\0|\0|TreatAsMissing
+pad|Reserved|7|3|0|Truncate|Error|9|ByType|\0|\0|TreatAsMissing

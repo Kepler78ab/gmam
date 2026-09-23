@@ -1,0 +1,11 @@
+# GMAM Schema
+version=1
+kind=data
+# sample data schema
+name|type|length|scale|rounding|overflow|overflowFill|align|padFill|missingFill|missingPolicy
+formId|Chars|10|0|Truncate|Truncate|9|ByType|\0|\0|TreatAsMissing
+inputCode|Chars|1|0|Truncate|Truncate|9|ByType|\0|\0|TreatAsMissing
+lotNo|Reserved|20|0|Truncate|Error|9|ByType|\0|\0|TreatAsMissing
+temp|Numeric|5|3|Truncate|FillChar|9|ByType|\0|\0|TreatAsMissing
+cnt|Chars|2|0|Truncate|Truncate|9|Right|\s|\0|TreatAsMissing
+code|Chars|4|0|Truncate|Error|9|Left|\s|*|TreatAsMissing

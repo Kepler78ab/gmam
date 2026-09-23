@@ -32,6 +32,9 @@ Thumbs.db
 
 # Qt / qmake 常见过程文件
 *.user
+.qcreator/
+.qtc_clangd/
+.qmake.stash
 *.pro.user
 *_qmlcache.qrc
 moc_*.cpp
@@ -46,5 +49,6 @@ ui_*.h
 *.dylib
 debug/
 release/
+bin/
 Makefile*
 object_script.*
