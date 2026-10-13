@@ -1,7 +1,7 @@
 #include "GmamSelfTest.h"
 
 #include "DataContentBuilder.h"
-#include "HeaderBuilder.h"
+#include "HeaderBuilder.h"   // 工程侧 extras（非 module_gmam）
 #include "TelegramCompose.h"
 
 #include <QDebug>

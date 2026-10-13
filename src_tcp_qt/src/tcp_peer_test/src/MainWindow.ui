@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>720</width>
+    <height>560</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>TCP 真对端 (TcpPeerTest)</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QVBoxLayout" name="verticalLayoutRoot">
+    <item>
+     <widget class="QGroupBox" name="groupListen">
+      <property name="title">
+       <string>监听（本进程是 Server，先启动再开客户端连过来）</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayoutListen">
+       <item>
+        <widget class="QLabel" name="labelHost">
+         <property name="text">
+          <string>绑定</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="editHost">
+         <property name="text">
+          <string>127.0.0.1</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelPort">
+         <property name="text">
+          <string>端口</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="spinPort">
+         <property name="minimum">
+          <number>1</number>
+         </property>
+         <property name="maximum">
+          <number>65535</number>
+         </property>
+         <property name="value">
+          <number>9000</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelMode">
+         <property name="text">
+          <string>收到后</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QComboBox" name="comboMode">
+         <item>
+          <property name="text">
+           <string>Echo回显</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>回正应答A</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>回负应答N</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>只收不回</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnListen">
+         <property name="text">
+          <string>开始监听</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnStop">
+         <property name="text">
+          <string>停止</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="lblStatus">
+         <property name="text">
+          <string>未监听</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupAck">
+      <property name="title">
+       <string>应答内容（回 A/N 模式用）</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayoutAck">
+       <item>
+        <widget class="QLabel" name="labelPos">
+         <property name="text">
+          <string>正应答</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="editAckPos">
+         <property name="text">
+          <string>A</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelNeg">
+         <property name="text">
+          <string>负应答</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLineEdit" name="editAckNeg">
+         <property name="text">
+          <string>N</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacerAck">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>40</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupSend">
+      <property name="title">
+       <string>手动发给已连接的客户端（可选）</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayoutSend">
+       <item>
+        <widget class="QPlainTextEdit" name="editSend">
+         <property name="maximumBlockCount">
+          <number>0</number>
+         </property>
+         <property name="placeholderText">
+          <string>手动回复内容</string>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>16777215</width>
+           <height>80</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayoutSendBtns">
+         <item>
+          <widget class="QCheckBox" name="chkHex">
+           <property name="text">
+            <string>按十六进制解析</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="btnSend">
+           <property name="text">
+            <string>发给全部已连接客户端</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacerSend">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupLog">
+      <property name="title">
+       <string>日志</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayoutLog">
+       <item>
+        <widget class="QTextEdit" name="textLog">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="font">
+          <font>
+           <family>Consolas</family>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="btnClearLog">
+         <property name="text">
+          <string>清空日志</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

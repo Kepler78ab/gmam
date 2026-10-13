@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MODULE_GMAM_FIELDCODEC_H
+#define MODULE_GMAM_FIELDCODEC_H
 
 #include "GmamTypes.h"
 
@@ -23,3 +24,5 @@ bool encodeField(const QString& value,
                  QString& reason);
 
 } // namespace gmam
+
+#endif // MODULE_GMAM_FIELDCODEC_H

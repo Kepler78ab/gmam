@@ -1,4 +1,5 @@
-#pragma once
+#ifndef GMAM_TESTS_GMAMSELFTEST_H
+#define GMAM_TESTS_GMAMSELFTEST_H
 
 /**
  * @file GmamSelfTest.h
@@ -15,3 +16,5 @@ bool gmamCompareT9LegacyVsGmam();
 
 /** 依次执行上述测试 */
 bool gmamRunAllTests();
+
+#endif // GMAM_TESTS_GMAMSELFTEST_H

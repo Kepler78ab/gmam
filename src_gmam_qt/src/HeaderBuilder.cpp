@@ -1,24 +1,26 @@
 #include "HeaderBuilder.h"
+
 #include "FieldCodec.h"
 #include "GmamError.h"
 
 namespace {
 
-FieldDetail toFieldDetail(const HeaderField& f)
+QString headerTypeName(HeaderFieldType t)
 {
-    FieldDetail d;
-    d.name          = f.name;
-    d.type          = toFieldType(f.type);
-    d.length        = f.length;
-    d.scale         = f.scale;
-    d.rounding      = f.rounding;
-    d.overflow      = f.overflow;
-    d.overflowFill  = f.overflowFill;
-    d.align         = f.align;
-    d.padFill       = f.padFill;
-    d.missingFill   = f.missingFill;
-    d.missingPolicy = f.missingPolicy;
-    return d;
+    switch (t) {
+    case HeaderFieldType::Numeric:  return QStringLiteral("Numeric");
+    case HeaderFieldType::Chars:    return QStringLiteral("Chars");
+    case HeaderFieldType::Reserved: return QStringLiteral("Reserved");
+    }
+    return QStringLiteral("Unknown");
+}
+
+QByteArray headerPlaceholder(const HeaderField& f)
+{
+    if (f.length <= 0)
+        return {};
+    const ResolvedFieldStyle style = resolveFieldStyle(f);
+    return QByteArray(f.length, style.missingFill);
 }
 
 } // namespace
@@ -49,7 +51,7 @@ QByteArray HeaderBuilder::build(const QHash<QString, QString>& values,
         if (f.offset < 0 || f.length <= 0
             || f.offset + f.length > buffer.size()) {
             errors << gmam::formatFieldError(
-                i, f.type, f.name,
+                i, headerTypeName(f.type), f.name,
                 QStringLiteral("偏移越界（offset=%1 len=%2）")
                     .arg(f.offset).arg(f.length));
             continue;
@@ -64,13 +66,14 @@ QByteArray HeaderBuilder::build(const QHash<QString, QString>& values,
             const QString value = keyPresent ? it.value() : QString();
 
             if (shouldUseMissingFill(f.missingPolicy, keyPresent, value)) {
-                fieldBytes = gmam::missingPlaceholder(f);
+                fieldBytes = headerPlaceholder(f);
             } else {
                 const FieldDetail tmp = toFieldDetail(f);
                 QString reason;
                 if (!gmam::encodeField(value, tmp, fieldBytes, reason)) {
-                    errors << gmam::formatFieldError(i, f.type, f.name, reason);
-                    fieldBytes = gmam::failurePlaceholder(f);
+                    errors << gmam::formatFieldError(
+                        i, headerTypeName(f.type), f.name, reason);
+                    fieldBytes = headerPlaceholder(f);
                 }
             }
         }

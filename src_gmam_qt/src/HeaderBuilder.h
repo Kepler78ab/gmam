@@ -1,6 +1,7 @@
-#pragma once
+#ifndef GMAM_HEADERBUILDER_H
+#define GMAM_HEADERBUILDER_H
 
-#include "GmamTypes.h"
+#include "HeaderTypes.h"
 
 #include <QByteArray>
 #include <QHash>
@@ -10,7 +11,7 @@
 
 /**
  * @file HeaderBuilder.h
- * @brief 按 offset 写入定长头部（v0.0.2：字段级错误收集）
+ * @brief 按 offset 写入定长头部（已移出 module_gmam）
  */
 class HeaderBuilder {
 public:
@@ -28,3 +29,5 @@ private:
     int  m_totalLength = 0;
     char m_holeFill    = ' ';
 };
+
+#endif // GMAM_HEADERBUILDER_H

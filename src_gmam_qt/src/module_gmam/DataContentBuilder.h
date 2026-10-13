@@ -1,4 +1,5 @@
-#pragma once
+#ifndef MODULE_GMAM_DATACONTENTBUILDER_H
+#define MODULE_GMAM_DATACONTENTBUILDER_H
 
 #include "GmamTypes.h"
 
@@ -34,3 +35,5 @@ private:
     int m_totalLength = 0;
     int m_maxLength   = 8162;
 };
+
+#endif // MODULE_GMAM_DATACONTENTBUILDER_H
