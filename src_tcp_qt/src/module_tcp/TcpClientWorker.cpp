@@ -35,12 +35,13 @@ void TcpClientWorker::setCustomSplitter(TcpCustomFrameSplitter splitter)
 
 void TcpClientWorker::slotApplyConfig(TcpClientConfig config)
 {
-    // ackEnabled 但无 matcher → 拒绝启用
+    // ack 开启却无 A/N matcher：强制关闭，避免无判定的停等死锁
     if (config.ackEnabled && (!m_ackPositive || !m_ackNegative)) {
         emit sigError(QStringLiteral("ackEnabled=true 但未设置 A/N matcher，已关闭 ack"));
         config.ackEnabled = false;
     }
 
+    // PesAscii → LengthPrefix 固定参数（拆帧实现只认 LengthPrefix/Custom/Raw）
     if (config.frameMode == TcpFrameMode::PesAscii) {
         config.frameMode = TcpFrameMode::LengthPrefix;
         config.lengthPrefixOffset = 0;
@@ -229,6 +230,7 @@ void TcpClientWorker::pumpPassThrough()
 
 void TcpClientWorker::pumpWithAck()
 {
+    // 停等窗口=1：已有未确认帧则不再取下一帧
     if (m_inFlight)
         return;
 
@@ -236,6 +238,7 @@ void TcpClientWorker::pumpWithAck()
     if (!m_sendQueue.tryPeek(frame))
         return;
 
+    // peek 不出队：等 A/N 或超次后再 dequeue
     m_inFlight = true;
     m_inFlightFrame = frame;
     m_inFlightSendCount = 1;
@@ -320,6 +323,7 @@ void TcpClientWorker::onSocketReadyRead()
 
 void TcpClientWorker::dispatchFrame(const QByteArray& frame)
 {
+    // 对端心跳等：不驱动业务 wait-ack
     if (m_heartbeatIgnore && m_heartbeatIgnore(frame))
         return;
 
@@ -388,13 +392,12 @@ void TcpClientWorker::onHeartbeatTimeout()
 
     QByteArray frame = m_config.heartbeatFrame;
     if (m_heartbeatProvider)
-        frame = m_heartbeatProvider();
+        frame = m_heartbeatProvider(); // provider 优先于固定帧
     if (frame.isEmpty())
         return;
 
-    if (m_config.heartbeatOccupyAckWindow && m_config.ackEnabled) {
-        // 占窗：仅当空闲时把心跳塞进队列头过于复杂；P1 简化为仍旁路，仅文档说明默认不占窗
-    }
+    // 默认旁路 write：不入业务队列、不占 ack 窗口（heartbeatOccupyAckWindow 占位未另实现）
+    Q_UNUSED(m_config.heartbeatOccupyAckWindow);
     writeOne(frame);
 }
 

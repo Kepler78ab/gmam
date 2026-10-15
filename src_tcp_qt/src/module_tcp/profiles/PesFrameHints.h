@@ -3,9 +3,9 @@
 
 /**
  * @file PesFrameHints.h
- * @brief PES/旧 toPes 协议辅助（可选）：拆帧建议值 + 简易 matcher
+ * @brief 可选 PES/旧 toPes 协议辅助：拆帧字段建议值 + 简易 A/N/心跳 matcher。
  *
- * 不写死进 TcpClient 核心；应用可选用。
+ * 不写死进 TcpClient 核心；应用按需 include 使用。
  */
 
 #include "IFrameMatcher.h"
@@ -15,11 +15,17 @@
 
 namespace tcp_pes {
 
-/** 现行 STRU_MSG_HEAD：msgType 在偏移 21 */
+/** 现行 STRU_MSG_HEAD 中 msgType 字节偏移。 */
 inline constexpr int kMsgTypeOffset = 21;
-/** 心跳电文号哨兵（10 字节区常见） */
+
+/** 心跳电文号区常见哨兵数字字符。 */
 inline constexpr char kHeartbeatMsgNumDigit = '9';
 
+/**
+ * @brief 将配置填成 PesAscii 拆帧（6 位十进制总长 + 尾 0x0A）。
+ * @param cfg 原配置
+ * @return 填好拆帧相关字段后的配置
+ */
 inline TcpClientConfig applyPesFramingHints(TcpClientConfig cfg)
 {
     cfg.frameMode = TcpFrameMode::PesAscii;
@@ -32,6 +38,11 @@ inline TcpClientConfig applyPesFramingHints(TcpClientConfig cfg)
     return cfg;
 }
 
+/**
+ * @brief 在 PesAscii 拆帧基础上打开常用心跳/ack 开关（不含 matcher 与心跳帧内容）。
+ * @param cfg 原配置
+ * @return 建议运行标志后的配置；仍须 setAckMatchers / setHeartbeatFrame
+ */
 inline TcpClientConfig recommendedRuntimeFlags(TcpClientConfig cfg)
 {
     cfg = applyPesFramingHints(std::move(cfg));
@@ -44,6 +55,11 @@ inline TcpClientConfig recommendedRuntimeFlags(TcpClientConfig cfg)
     return cfg;
 }
 
+/**
+ * @brief 粗判是否像心跳帧（电文号区含连续 9）。
+ * @param frame 完整帧
+ * @return true 像心跳
+ */
 inline bool looksLikeHeartbeat(const QByteArray& frame)
 {
     // 头-only 约 23：电文号区（offset 11, len 10）多为 9
@@ -53,6 +69,9 @@ inline bool looksLikeHeartbeat(const QByteArray& frame)
     return num.contains("9999999999");
 }
 
+/**
+ * @brief 正应答 matcher：偏移 21 为 'A'（心跳帧返回 false）。
+ */
 inline TcpFrameMatcher matcherPositiveA()
 {
     return [](const QByteArray& frame) {
@@ -62,6 +81,9 @@ inline TcpFrameMatcher matcherPositiveA()
     };
 }
 
+/**
+ * @brief 负应答 matcher：偏移 21 为 'N'（心跳帧返回 false）。
+ */
 inline TcpFrameMatcher matcherNegativeN()
 {
     return [](const QByteArray& frame) {
@@ -71,6 +93,9 @@ inline TcpFrameMatcher matcherNegativeN()
     };
 }
 
+/**
+ * @brief 心跳忽略 matcher：像心跳则不驱动 wait-ack。
+ */
 inline TcpFrameMatcher matcherHeartbeatIgnore()
 {
     return [](const QByteArray& frame) { return looksLikeHeartbeat(frame); };
