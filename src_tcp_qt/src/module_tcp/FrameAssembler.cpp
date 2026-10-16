@@ -16,6 +16,11 @@ void FrameAssembler::clear()
     m_lastError.clear();
 }
 
+int FrameAssembler::bufferSize() const
+{
+    return m_buffer.size();
+}
+
 QString FrameAssembler::takeLastError()
 {
     const QString e = m_lastError;

@@ -45,6 +45,12 @@ public:
     /** @brief 设置 Custom 拆帧回调。 */
     void setCustomSplitter(TcpCustomFrameSplitter splitter);
 
+    /**
+     * @brief 当前拆帧缓冲未消费字节数。
+     * @return 缓冲大小；供门面跨线程查询
+     */
+    int receiveBufferSize() const { return m_assembler.bufferSize(); }
+
 public slots:
     /** @brief 应用配置；PesAscii 会映射为 LengthPrefix 参数。 */
     void slotApplyConfig(TcpClientConfig config);
@@ -64,6 +70,10 @@ public slots:
     void slotNotifyQueueSize(int size);
     /** @brief 关闭 socket、停定时器、清空队列。 */
     void slotShutdown();
+    /**
+     * @brief 清空接收拆帧缓冲（不影响发送队列与 wait-ack）。
+     */
+    void slotClearReceiveBuffer();
 
 signals:
     void sigConnected();                                    ///< 已连接

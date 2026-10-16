@@ -5,6 +5,7 @@ TCP 通讯模块工程目录（对齐 `src_gmam_qt`：`docs` + `src/module_*/` +
 | 路径 | 说明 |
 |------|------|
 | **[docs/使用说明.md](使用说明.md)** | **module_tcp 调用说明（API / 参数 / matcher）** |
+| **[docs/v0.0.3/](v0.0.3/README.md)** | **v0.0.3 接收缓冲 API（上层重同步支撑，已落地）** |
 | **[docs/v0.0.2/](v0.0.2/README.md)** | **v0.0.2 源码注释（古法编程，已落地）** |
 | [docs/v0.0.1/analy_01_旧方案tcp模块分析.md](v0.0.1/analy_01_旧方案tcp模块分析.md) | 旧工程 `toPesTcp_maybe` 分析 |
 | [docs/v0.0.1/analy_02_拆分功能与旧项目对照.md](v0.0.1/analy_02_拆分功能与旧项目对照.md) | 拆分后功能 ↔ 旧实现对照（含收发策略） |
@@ -14,7 +15,7 @@ TCP 通讯模块工程目录（对齐 `src_gmam_qt`：`docs` + `src/module_*/` +
 | [docs/v0.0.1/计划_实现方案与计划.md](v0.0.1/计划_实现方案与计划.md) | 实现方案与计划（C01～C12） |
 | [docs/v0.0.1/模块文件规划.md](v0.0.1/模块文件规划.md) | 源文件清单 |
 | [docs/v0.0.1/测试_P2_本地UI联调.md](v0.0.1/测试_P2_本地UI联调.md) | P2：双工程联调 |
-| `src/module_tcp/` | **v0.0.1 功能 + v0.0.2 注释** |
+| `src/module_tcp/` | **v0.0.1 功能 + v0.0.2 注释 + v0.0.3 清/查接收缓冲** |
 | `src/tcp_peer_test/src/TcpPeerTest.pro` | **P2** 真对端 |
 | `src/tcp_ui_test/src/TcpUiTest.pro` | **P2** 客户端 |
 | [docs/v0.0.1/变更记录.md](v0.0.1/变更记录.md) | 变更记录 |

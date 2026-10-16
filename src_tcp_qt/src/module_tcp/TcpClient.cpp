@@ -185,3 +185,22 @@ void TcpClient::setCustomFrameSplitter(TcpCustomFrameSplitter splitter)
     if (m_started)
         pushSplitterToWorker();
 }
+
+void TcpClient::clearReceiveBuffer()
+{
+    if (!m_started || !m_worker)
+        return;
+    QMetaObject::invokeMethod(m_worker, "slotClearReceiveBuffer", Qt::QueuedConnection);
+}
+
+int TcpClient::receiveBufferSize() const
+{
+    if (!m_worker)
+        return 0;
+    int sz = 0;
+    QMetaObject::invokeMethod(
+        m_worker,
+        [w = m_worker, &sz]() { sz = w->receiveBufferSize(); },
+        Qt::BlockingQueuedConnection);
+    return sz;
+}

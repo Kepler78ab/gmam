@@ -31,6 +31,12 @@ public:
     void clear();
 
     /**
+     * @brief 当前未消费缓冲字节数。
+     * @return m_buffer.size()
+     */
+    int bufferSize() const;
+
+    /**
      * @brief 喂入本轮 socket 数据并尽量拆出完整帧。
      * @param chunk 原始字节块
      * @return 本轮完整帧列表（可空）

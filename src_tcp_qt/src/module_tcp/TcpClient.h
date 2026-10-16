@@ -94,6 +94,20 @@ public:
      */
     void setCustomFrameSplitter(TcpCustomFrameSplitter splitter);
 
+    /**
+     * @brief 清空接收侧拆帧缓冲与最近拆帧错误（异步投递到 worker，返回时未必已执行完）。
+     * @note 不影响发送队列、wait-ack 窗口、TCP 连接状态。
+     * @note ackEnabled 时：可能丢掉尚未参与 matcher 的应答字节，随后可能触发超时重传——属预期副作用。
+     * @note 可靠协议级重同步仍由上层或 Custom splitter 负责。
+     */
+    void clearReceiveBuffer();
+
+    /**
+     * @brief 查询当前拆帧缓冲未消费字节数（跨线程快照，仅诊断用）。
+     * @return 某一时刻的缓冲大小；worker 未启动时返回 0。勿作为强一致业务判定条件。
+     */
+    int receiveBufferSize() const;
+
 signals:
     /** 连接成功。 */
     void connected();

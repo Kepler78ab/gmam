@@ -33,6 +33,11 @@ void TcpClientWorker::setCustomSplitter(TcpCustomFrameSplitter splitter)
     m_assembler.setCustomSplitter(std::move(splitter));
 }
 
+void TcpClientWorker::slotClearReceiveBuffer()
+{
+    m_assembler.clear();
+}
+
 void TcpClientWorker::slotApplyConfig(TcpClientConfig config)
 {
     // ack 开启却无 A/N matcher：强制关闭，避免无判定的停等死锁
